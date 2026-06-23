@@ -30,7 +30,6 @@
 
   a{color:inherit;}
 
-  /* ---------- top ticket nav ---------- */
   header{
     position:sticky; top:0; z-index:50;
     background:var(--navy);
@@ -54,7 +53,6 @@
   }
   nav a:hover{opacity:1; border-color:var(--amber);}
 
-  /* ---------- hero ---------- */
   .hero{
     max-width:1100px; margin:0 auto; padding:48px 20px 36px;
     display:grid; grid-template-columns:1.1fr 0.9fr; gap:32px; align-items:center;
@@ -99,7 +97,6 @@
   .section-head h2{font-size:34px; margin:0;}
   .section-head .hint{font-size:13px; opacity:0.6; max-width:340px;}
 
-  /* ---------- ticket card (signature element) ---------- */
   .grid{display:grid; gap:18px;}
   .grid.cards{grid-template-columns:repeat(auto-fill, minmax(220px,1fr));}
 
@@ -148,8 +145,32 @@
   }
   .add-card:hover{opacity:1; border-color:var(--amber); color:var(--amber);}
 
-  /* ---------- selecciones ---------- */
+  .sub-display{
+    font-family:'Teko', sans-serif; font-weight:600; text-transform:uppercase;
+    font-size:22px; letter-spacing:0.5px; color:var(--amber);
+    margin:30px 0 6px;
+  }
   .flag-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:14px;}
+  .wc-matches{margin-top:18px;}
+
+  .group-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .group-table th, .group-table td{padding:6px 4px; text-align:center; border-bottom:1px solid var(--line);}
+  .group-table th{opacity:0.6; font-weight:600; font-size:11px; text-transform:uppercase;}
+  .group-table td:first-child, .group-table th:first-child{text-align:left;}
+  .group-table tr.qualified td:first-child{color:var(--amber);}
+
+  .sched-day{font-size:12px; letter-spacing:1px; text-transform:uppercase; opacity:0.55; margin:14px 0 6px;}
+
+  .bracket-scroll{display:flex; gap:14px; overflow-x:auto; padding-bottom:6px; -webkit-overflow-scrolling:touch;}
+  .bracket-pair{
+    flex:0 0 220px;
+    background:var(--navy-2); border:1px solid var(--line); border-radius:10px;
+    padding:12px; font-size:13px;
+  }
+  .bracket-pair .vs-row{display:flex; justify-content:space-between; padding:4px 0;}
+  .bracket-pair .vs-row.tbd{opacity:0.5; font-style:italic;}
+  .bracket-pair .bp-date{font-size:11px; opacity:0.5; margin-top:6px; text-transform:uppercase; letter-spacing:1px;}
+
   .flag-card{
     background:var(--navy-2); border:1px solid var(--line); border-radius:10px;
     padding:16px; text-align:center;
@@ -157,7 +178,6 @@
   .flag-emoji{font-size:34px; display:block; margin-bottom:8px;}
   .flag-card .name{font-size:14px; font-weight:600;}
 
-  /* ---------- resultados ---------- */
   .match-ticket{
     display:flex; align-items:center; justify-content:space-between;
     background:var(--navy-2); border:1px solid var(--line); border-radius:10px;
@@ -175,7 +195,6 @@
     font-size:13px; opacity:0.7; margin-top:14px; line-height:1.5;
   }
 
-  /* ---------- mi 11 ---------- */
   .pitch-wrap{
     background:var(--grass);
     background-image:
@@ -254,6 +273,7 @@
     <a href="#clubes">Clubes</a>
     <a href="#selecciones">Selecciones</a>
     <a href="#resultados">Resultados</a>
+    <a href="#mundial">Mundial 2026</a>
     <a href="#mi11">Mi 11 Ideal</a>
   </nav>
 </header>
@@ -297,21 +317,41 @@
   <div class="section-head">
     <div>
       <h2 class="display">Selecciones favoritas</h2>
-      <p class="hint">Los equipos nacionales que más te gusta ver jugar.</p>
+      <p class="hint">Resultados reales del Mundial 2026 para las que están participando.</p>
     </div>
   </div>
   <div class="flag-grid" id="flagsGrid"></div>
+  <div id="wcMatchesList" class="wc-matches"></div>
 </section>
 
 <section id="resultados">
   <div class="section-head">
     <div>
       <h2 class="display">Resultados</h2>
-      <p class="hint">Resultados y próximos partidos reales de Barcelona, Real Madrid y Manchester City, vía football-data.org.</p>
+      <p class="hint">Resultados y próximos partidos reales de Barcelona, Real Madrid y Manchester City.</p>
     </div>
   </div>
-  <div id="matchesList"><div class="note-box" id="matchesLoading">Cargando partidos…</div></div>
+  <div id="matchesList"><div class="note-box">Cargando partidos…</div></div>
   <div class="note-box">ℹ️ Datos reales para estos 3 clubes (cubiertos gratis por football-data.org). Otros clubes que agregues seguirán mostrando una tarjeta de ejemplo hasta conectarlos también.</div>
+</section>
+
+<section id="mundial">
+  <div class="section-head">
+    <div>
+      <h2 class="display">Mundial 2026</h2>
+      <p class="hint">Datos reales del torneo: grupos, próximos partidos y llave de eliminación.</p>
+    </div>
+  </div>
+
+  <h3 class="sub-display">Tabla de grupos</h3>
+  <div id="wcGroups" class="grid cards"><div class="note-box">Cargando grupos…</div></div>
+
+  <h3 class="sub-display">Próximos partidos</h3>
+  <div id="wcSchedule"><div class="note-box">Cargando calendario…</div></div>
+
+  <h3 class="sub-display">Llave — Dieciseisavos de Final</h3>
+  <p class="hint">Los cruces se confirman al terminar la fase de grupos. Los cupos pendientes se muestran como "Por definir".</p>
+  <div id="wcBracket"><div class="note-box">Cargando llave…</div></div>
 </section>
 
 <section id="mi11">
@@ -323,7 +363,7 @@
   </div>
   <div class="pitch-wrap" id="pitch"></div>
   <div class="mi11-actions">
-    <button class="btn btn-ghost" id="resetPitch">Borrar mi 11</button>
+    <button class="btn btn-ghost" type="button" id="resetPitch">Borrar mi 11</button>
   </div>
 </section>
 
@@ -333,7 +373,6 @@
 
 <script>
 (function(){
-  // ---------- safe storage helpers ----------
   async function getData(key, fallback){
     try{
       const r = await window.storage.get(key);
@@ -341,7 +380,7 @@
     }catch(e){ return fallback; }
   }
   async function setData(key, value){
-    try{ await window.storage.set(key, JSON.stringify(value)); }catch(e){ /* ignore */ }
+    try{ await window.storage.set(key, JSON.stringify(value)); }catch(e){}
   }
 
   const defaultPlayers = [
@@ -363,56 +402,47 @@
   ];
   const positions = ["POR","DEF","DEF","DEF","DEF","MED","MED","MED","DEL","DEL","DEL"];
 
-  // ---------- live match data (football-data.org, free tier) ----------
   const FD_API_KEY = "17b9e7ee00e14296b4fb2cfe81270763";
   const FD_TEAM_IDS = { "FC Barcelona": 81, "Real Madrid": 86, "Manchester City": 65 };
-  const CACHE_MINUTES = 15;
+  const CACHE_MIN = 15;
 
-  async function fdFetch(teamId, status, limit){
-    const cacheKey = `fd_${teamId}_${status}`;
+  async function fdFetch(path){
+    const cacheKey = "fd_" + path.replace(/\W/g,"_");
     const cached = await getData(cacheKey, null);
-    if(cached && (Date.now() - cached.ts) < CACHE_MINUTES*60*1000){
-      return cached.matches;
-    }
-    const url = `https://api.football-data.org/v4/teams/${teamId}/matches?status=${status}&limit=${limit}`;
-    const res = await fetch(url, { headers: { "X-Auth-Token": FD_API_KEY } });
-    if(!res.ok) throw new Error("fd_error_" + res.status);
+    if(cached && (Date.now() - cached.ts) < CACHE_MIN*60*1000) return cached.data;
+    const res = await fetch("https://api.football-data.org/v4/" + path, {
+      headers: { "X-Auth-Token": FD_API_KEY }
+    });
+    if(!res.ok) throw new Error("fd_" + res.status);
     const data = await res.json();
-    await setData(cacheKey, { ts: Date.now(), matches: data.matches || [] });
-    return data.matches || [];
+    await setData(cacheKey, { ts: Date.now(), data });
+    return data;
   }
 
-  function fdMatchCard(m, fallbackClubName){
-    const home = m.homeTeam?.name || "?";
-    const away = m.awayTeam?.name || "?";
-    const comp = m.competition?.name || "";
+  function fmtDate(utcStr){
+    return new Date(utcStr).toLocaleDateString("es-CL", {day:"numeric", month:"short"});
+  }
+  function fmtTime(utcStr){
+    return new Date(utcStr).toLocaleTimeString("es-CL", {hour:"2-digit", minute:"2-digit"});
+  }
+  function matchCard(m){
+    const home = m.homeTeam?.shortName || m.homeTeam?.name || "?";
+    const away = m.awayTeam?.shortName || m.awayTeam?.name || "?";
+    const comp = m.competition?.name || m.group || "";
     const isLive = m.status === "IN_PLAY" || m.status === "PAUSED";
     let score = "vs";
     if(m.status === "FINISHED" || isLive){
-      const hs = m.score?.fullTime?.home ?? m.score?.halfTime?.home ?? "-";
-      const as = m.score?.fullTime?.away ?? m.score?.halfTime?.away ?? "-";
-      score = `${hs} - ${as}`;
-    } else if(m.status === "SCHEDULED" || m.status === "TIMED"){
-      const d = new Date(m.utcDate);
-      score = d.toLocaleDateString("es-CL", {day:"numeric", month:"short"});
+      const hs = m.score?.fullTime?.home ?? "-";
+      const as = m.score?.fullTime?.away ?? "-";
+      score = hs + " - " + as;
+    } else {
+      score = fmtDate(m.utcDate) + " " + fmtTime(m.utcDate);
     }
-    return `
-      <div class="match-ticket">
-        <div class="match-teams">${home} vs ${away} ${isLive ? '<span class="badge-live">EN VIVO</span>':''}</div>
-        <div class="match-score">${score}</div>
-        <div class="match-meta">${comp}</div>
-      </div>
-    `;
-  }
-
-  function mockMatchCard(clubName){
-    return `
-      <div class="match-ticket">
-        <div class="match-teams">${clubName} — sin datos en vivo todavía</div>
-        <div class="match-score">--</div>
-        <div class="match-meta">Conecta este club para ver resultados reales</div>
-      </div>
-    `;
+    return `<div class="match-ticket">
+      <div class="match-teams">${home} vs ${away}${isLive?' <span class="badge-live">EN VIVO</span>':''}</div>
+      <div class="match-score">${score}</div>
+      <div class="match-meta">${comp}</div>
+    </div>`;
   }
 
   async function renderMatches(){
@@ -422,24 +452,128 @@
     for(const club of clubs){
       const teamId = FD_TEAM_IDS[club.name];
       if(!teamId){
-        html += mockMatchCard(club.name);
+        html += `<div class="match-ticket"><div class="match-teams">${club.name} — sin datos en vivo todavía</div><div class="match-score">--</div><div class="match-meta">Conecta este club para ver resultados reales</div></div>`;
         continue;
       }
       try{
-        const [finished, scheduled] = await Promise.all([
-          fdFetch(teamId, "FINISHED", 2),
-          fdFetch(teamId, "SCHEDULED", 1)
+        const [fin, sch] = await Promise.all([
+          fdFetch(`teams/${teamId}/matches?status=FINISHED&limit=2`),
+          fdFetch(`teams/${teamId}/matches?status=SCHEDULED&limit=1`)
         ]);
-        finished.forEach(m => html += fdMatchCard(m));
-        scheduled.forEach(m => html += fdMatchCard(m));
-        if(finished.length === 0 && scheduled.length === 0){
-          html += mockMatchCard(club.name);
-        }
+        (fin.matches||[]).forEach(m => html += matchCard(m));
+        (sch.matches||[]).forEach(m => html += matchCard(m));
+        if(!fin.matches?.length && !sch.matches?.length)
+          html += `<div class="match-ticket"><div class="match-teams">${club.name}</div><div class="match-meta">Sin partidos recientes</div></div>`;
       }catch(e){
-        html += `<div class="match-ticket"><div class="match-teams">${club.name}</div><div class="match-meta">No se pudo cargar (sin conexión o límite de consultas alcanzado)</div></div>`;
+        html += `<div class="match-ticket"><div class="match-teams">${club.name}</div><div class="match-meta">No se pudo cargar (sin conexión o límite alcanzado)</div></div>`;
       }
     }
-    listEl.innerHTML = html || mockMatchCard("tus clubes");
+    listEl.innerHTML = html;
+  }
+
+  const WC_NAME_MAP = { Chile:"Chile", España:"Spain", Argentina:"Argentina", Brasil:"Brazil", Francia:"France" };
+
+  async function getWCMatches(){
+    return (await fdFetch("competitions/WC/matches")).matches || [];
+  }
+
+  async function renderWCMatches(){
+    const container = document.getElementById("wcMatchesList");
+    container.innerHTML = `<div class="note-box">Cargando partidos del Mundial…</div>`;
+    let all;
+    try{ all = await getWCMatches(); }
+    catch(e){
+      container.innerHTML = `<div class="note-box">No se pudieron cargar los partidos del Mundial.</div>`;
+      return;
+    }
+    let html = "";
+    for(const f of flags){
+      const eng = WC_NAME_MAP[f.name];
+      const tm = all.filter(m => m.homeTeam?.name===eng || m.awayTeam?.name===eng);
+      if(!tm.length){
+        html += `<div class="match-ticket"><div class="match-teams">${f.emoji} ${f.name}</div><div class="match-meta">No participa en el Mundial 2026</div></div>`;
+        continue;
+      }
+      const fin = tm.filter(m => m.status==="FINISHED").slice(-2);
+      const live = tm.filter(m => m.status==="IN_PLAY"||m.status==="PAUSED").slice(0,1);
+      const nxt = tm.filter(m => m.status==="SCHEDULED"||m.status==="TIMED").slice(0,1);
+      [...fin,...live,...nxt].forEach(m => html += matchCard(m));
+    }
+    container.innerHTML = html;
+  }
+
+  async function renderWCGroups(){
+    const el = document.getElementById("wcGroups");
+    try{
+      const data = await fdFetch("competitions/WC/standings");
+      const standings = data.standings || [];
+      if(!standings.length){ el.innerHTML = `<div class="note-box">Grupos aún no disponibles.</div>`; return; }
+      el.innerHTML = standings.map(g => {
+        const rows = (g.table||[]).map((t,i) =>
+          `<tr class="${i<2?'qualified':''}">
+            <td>${t.team?.shortName||t.team?.name||"?"}</td>
+            <td>${t.playedGames}</td><td>${t.points}</td>
+            <td>${t.goalDifference>=0?'+':''}${t.goalDifference}</td>
+          </tr>`
+        ).join("");
+        return `<div class="ticket">
+          <p class="player-name" style="font-size:18px;">${g.group||"Grupo"}</p>
+          <table class="group-table">
+            <tr><th>Equipo</th><th>PJ</th><th>Pts</th><th>Dif</th></tr>
+            ${rows}
+          </table>
+        </div>`;
+      }).join("");
+    }catch(e){
+      el.innerHTML = `<div class="note-box">No se pudieron cargar los grupos (${e.message}).</div>`;
+    }
+  }
+
+  async function renderWCSchedule(){
+    const el = document.getElementById("wcSchedule");
+    try{
+      const all = await getWCMatches();
+      const upcoming = all.filter(m => m.status==="SCHEDULED"||m.status==="TIMED"||m.status==="IN_PLAY"||m.status==="PAUSED").slice(0,20);
+      if(!upcoming.length){ el.innerHTML = `<div class="note-box">No hay partidos próximos disponibles.</div>`; return; }
+      const byDay = {};
+      upcoming.forEach(m => {
+        const day = new Date(m.utcDate).toLocaleDateString("es-CL",{weekday:"long",day:"numeric",month:"long"});
+        if(!byDay[day]) byDay[day]=[];
+        byDay[day].push(m);
+      });
+      el.innerHTML = Object.entries(byDay).map(([day,ms]) =>
+        `<div class="sched-day">${day}</div>` + ms.map(m => matchCard(m)).join("")
+      ).join("");
+    }catch(e){
+      el.innerHTML = `<div class="note-box">No se pudo cargar el calendario (${e.message}).</div>`;
+    }
+  }
+
+  async function renderWCBracket(){
+    const el = document.getElementById("wcBracket");
+    try{
+      const all = await getWCMatches();
+      const r16 = all.filter(m => m.stage==="ROUND_OF_16"||m.stage==="LAST_16");
+      if(!r16.length){
+        el.innerHTML = `<div class="note-box">Los cruces de Dieciseisavos se definirán al terminar la fase de grupos. Vuelve a revisar cuando estén listos.</div>`;
+        return;
+      }
+      el.innerHTML = `<div class="bracket-scroll">` +
+        r16.map(m => {
+          const home = m.homeTeam?.shortName||m.homeTeam?.name||"Por definir";
+          const away = m.awayTeam?.shortName||m.awayTeam?.name||"Por definir";
+          const isTBD = !m.homeTeam?.name || !m.awayTeam?.name;
+          let score = fmtDate(m.utcDate);
+          if(m.status==="FINISHED"){ score = (m.score?.fullTime?.home??"-")+" - "+(m.score?.fullTime?.away??"-"); }
+          return `<div class="bracket-pair">
+            <div class="vs-row ${isTBD?'tbd':''}">${home}</div>
+            <div class="vs-row ${isTBD?'tbd':''}">vs ${away}</div>
+            <div class="bp-date">${score}</div>
+          </div>`;
+        }).join("") + `</div>`;
+    }catch(e){
+      el.innerHTML = `<div class="note-box">No se pudo cargar la llave (${e.message}).</div>`;
+    }
   }
 
   function ticketHTML(inner, tag){
@@ -456,7 +590,6 @@
       <div class="perf"></div>
       <div class="stat-row"><span>Posición</span><span class="v">${p.info}</span></div>
     `, "Carnet")).join("") + `<div class="add-card" id="addPlayerBtn">+ Agregar jugador</div>`;
-
     document.getElementById("addPlayerBtn").onclick = async () => {
       const name = prompt("Nombre del jugador:");
       if(!name) return;
@@ -481,7 +614,6 @@
         </div>
       </div>
     `)).join("") + `<div class="add-card" id="addClubBtn">+ Agregar club</div>`;
-
     document.getElementById("addClubBtn").onclick = async () => {
       const name = prompt("Nombre del club:");
       if(!name) return;
@@ -506,7 +638,7 @@
   async function renderPitch(){
     const lineup = await getData("lineup", {});
     const pitch = document.getElementById("pitch");
-    const rows = [[0],[1,2,3,4],[5,6,7],[8,9,10]]; // POR / DEF / MED / DEL
+    const rows = [[0],[1,2,3,4],[5,6,7],[8,9,10]];
     pitch.innerHTML = rows.map(rowIdx => `
       <div class="pitch-row">
         ${rowIdx.map(i => `
@@ -517,7 +649,6 @@
         `).join("")}
       </div>
     `).join("");
-
     pitch.querySelectorAll(".slot").forEach(slot => {
       slot.onclick = async () => {
         const i = slot.getAttribute("data-i");
@@ -542,6 +673,10 @@
   renderClubs();
   renderFlags();
   renderMatches();
+  renderWCMatches();
+  renderWCGroups();
+  renderWCSchedule();
+  renderWCBracket();
   renderPitch();
 })();
 </script>
