@@ -307,11 +307,11 @@
   <div class="section-head">
     <div>
       <h2 class="display">Resultados</h2>
-      <p class="hint">Ejemplo de cómo se vería esta sección. Para resultados reales en vivo, un adulto puede ayudarte a conectar una fuente de datos de fútbol más adelante.</p>
+      <p class="hint">Resultados y próximos partidos reales de Barcelona, Real Madrid y Manchester City, vía football-data.org.</p>
     </div>
   </div>
-  <div id="matchesList"></div>
-  <div class="note-box">⚠️ Estos resultados son de ejemplo (no son datos reales en vivo todavía). Sirven para mostrar cómo va a verse la sección.</div>
+  <div id="matchesList"><div class="note-box" id="matchesLoading">Cargando partidos…</div></div>
+  <div class="note-box">ℹ️ Datos reales para estos 3 clubes (cubiertos gratis por football-data.org). Otros clubes que agregues seguirán mostrando una tarjeta de ejemplo hasta conectarlos también.</div>
 </section>
 
 <section id="mi11">
@@ -361,12 +361,86 @@
     {emoji:"🇧🇷", name:"Brasil"},
     {emoji:"🇫🇷", name:"Francia"}
   ];
-  const matches = [
-    {teams:"FC Barcelona vs Real Madrid", score:"2 - 1", meta:"Liga · Jornada 30", live:false},
-    {teams:"Chile vs Argentina", score:"0 - 0", meta:"Eliminatorias · Min 41", live:true},
-    {teams:"Manchester City vs Arsenal", score:"3 - 2", meta:"Premier League", live:false}
-  ];
   const positions = ["POR","DEF","DEF","DEF","DEF","MED","MED","MED","DEL","DEL","DEL"];
+
+  // ---------- live match data (football-data.org, free tier) ----------
+  const FD_API_KEY = "17b9e7ee00e14296b4fb2cfe81270763";
+  const FD_TEAM_IDS = { "FC Barcelona": 81, "Real Madrid": 86, "Manchester City": 65 };
+  const CACHE_MINUTES = 15;
+
+  async function fdFetch(teamId, status, limit){
+    const cacheKey = `fd_${teamId}_${status}`;
+    const cached = await getData(cacheKey, null);
+    if(cached && (Date.now() - cached.ts) < CACHE_MINUTES*60*1000){
+      return cached.matches;
+    }
+    const url = `https://api.football-data.org/v4/teams/${teamId}/matches?status=${status}&limit=${limit}`;
+    const res = await fetch(url, { headers: { "X-Auth-Token": FD_API_KEY } });
+    if(!res.ok) throw new Error("fd_error_" + res.status);
+    const data = await res.json();
+    await setData(cacheKey, { ts: Date.now(), matches: data.matches || [] });
+    return data.matches || [];
+  }
+
+  function fdMatchCard(m, fallbackClubName){
+    const home = m.homeTeam?.name || "?";
+    const away = m.awayTeam?.name || "?";
+    const comp = m.competition?.name || "";
+    const isLive = m.status === "IN_PLAY" || m.status === "PAUSED";
+    let score = "vs";
+    if(m.status === "FINISHED" || isLive){
+      const hs = m.score?.fullTime?.home ?? m.score?.halfTime?.home ?? "-";
+      const as = m.score?.fullTime?.away ?? m.score?.halfTime?.away ?? "-";
+      score = `${hs} - ${as}`;
+    } else if(m.status === "SCHEDULED" || m.status === "TIMED"){
+      const d = new Date(m.utcDate);
+      score = d.toLocaleDateString("es-CL", {day:"numeric", month:"short"});
+    }
+    return `
+      <div class="match-ticket">
+        <div class="match-teams">${home} vs ${away} ${isLive ? '<span class="badge-live">EN VIVO</span>':''}</div>
+        <div class="match-score">${score}</div>
+        <div class="match-meta">${comp}</div>
+      </div>
+    `;
+  }
+
+  function mockMatchCard(clubName){
+    return `
+      <div class="match-ticket">
+        <div class="match-teams">${clubName} — sin datos en vivo todavía</div>
+        <div class="match-score">--</div>
+        <div class="match-meta">Conecta este club para ver resultados reales</div>
+      </div>
+    `;
+  }
+
+  async function renderMatches(){
+    const listEl = document.getElementById("matchesList");
+    const clubs = await getData("clubs", defaultClubs);
+    let html = "";
+    for(const club of clubs){
+      const teamId = FD_TEAM_IDS[club.name];
+      if(!teamId){
+        html += mockMatchCard(club.name);
+        continue;
+      }
+      try{
+        const [finished, scheduled] = await Promise.all([
+          fdFetch(teamId, "FINISHED", 2),
+          fdFetch(teamId, "SCHEDULED", 1)
+        ]);
+        finished.forEach(m => html += fdMatchCard(m));
+        scheduled.forEach(m => html += fdMatchCard(m));
+        if(finished.length === 0 && scheduled.length === 0){
+          html += mockMatchCard(club.name);
+        }
+      }catch(e){
+        html += `<div class="match-ticket"><div class="match-teams">${club.name}</div><div class="match-meta">No se pudo cargar (sin conexión o límite de consultas alcanzado)</div></div>`;
+      }
+    }
+    listEl.innerHTML = html || mockMatchCard("tus clubes");
+  }
 
   function ticketHTML(inner, tag){
     return `<div class="ticket">${tag?`<span class="stub-tag">${tag}</span>`:""}${inner}</div>`;
@@ -416,6 +490,7 @@
       current.push({name, initials, color:"#3F8F5F"});
       await setData("clubs", current);
       renderClubs();
+      renderMatches();
     };
   }
 
@@ -424,16 +499,6 @@
       <div class="flag-card">
         <span class="flag-emoji">${f.emoji}</span>
         <span class="name">${f.name}</span>
-      </div>
-    `).join("");
-  }
-
-  function renderMatches(){
-    document.getElementById("matchesList").innerHTML = matches.map(m => `
-      <div class="match-ticket">
-        <div class="match-teams">${m.teams} ${m.live ? '<span class="badge-live">EN VIVO</span>':''}</div>
-        <div class="match-score">${m.score}</div>
-        <div class="match-meta">${m.meta}</div>
       </div>
     `).join("");
   }
@@ -483,4 +548,3 @@
 
 </body>
 </html>
-
