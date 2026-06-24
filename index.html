@@ -199,7 +199,6 @@
 
 <script>
 (function(){
-  // ---------- storage ----------
   async function getData(key,fallback){
     try{const r=await window.storage.get(key);return r?JSON.parse(r.value):fallback;}catch(e){return fallback;}
   }
@@ -226,10 +225,9 @@
   ];
   const positions=["POR","DEF","DEF","DEF","DEF","MED","MED","MED","DEL","DEL","DEL"];
 
-  // ---------- API: thesportsdb.com (gratuito, sin key, CORS OK desde navegador) ----------
   const TSDB="https://www.thesportsdb.com/api/v1/json/3";
-  const TSDB_TEAMS={"FC Barcelona":"133604","Real Madrid":"133600","Manchester City":"133613"};
   const CACHE_MS=15*60*1000;
+  const _teamIdCache={};
 
   async function tsdbFetch(path){
     const ck="ts_"+path.replace(/\W/g,"_");
@@ -242,10 +240,34 @@
     return data;
   }
 
+  async function getTeamId(name){
+    if(_teamIdCache[name]) return _teamIdCache[name];
+    const d=await tsdbFetch("/searchteams.php?t="+encodeURIComponent(name));
+    const id=d.teams?.[0]?.idTeam||null;
+    if(id) _teamIdCache[name]=id;
+    return id;
+  }
+
   let _wc=null;
   function fetchWC(){
-    if(!_wc) _wc=tsdbFetch("/eventsseason.php?id=4429&s=2026").then(d=>d.events||[]).catch(()=>[]);
+    if(!_wc) _wc=(async()=>{
+      for(const s of ["2026","2025-2026"]){
+        try{
+          const d=await tsdbFetch(`/eventsseason.php?id=4429&s=${s}`);
+          if(d.events?.length) return d.events;
+        }catch(e){}
+      }
+      return [];
+    })();
     return _wc;
+  }
+
+  function fmtDate(dateEvent,strTime){
+    const t=(strTime||"00:00:00").slice(0,5);
+    const d=new Date(dateEvent+"T"+t+":00");
+    if(isNaN(d)) return dateEvent||"Por confirmar";
+    return d.toLocaleDateString("es-CL",{day:"numeric",month:"short"})
+      +" "+d.toLocaleTimeString("es-CL",{hour:"2-digit",minute:"2-digit"});
   }
 
   function tsMatchCard(e){
@@ -258,8 +280,7 @@
     if(finished||live){
       score=(e.intHomeScore??"-")+" - "+(e.intAwayScore??"-");
     }else{
-      const d=new Date(e.dateEvent+"T"+(e.strTime||"00:00")+":00");
-      score=d.toLocaleDateString("es-CL",{day:"numeric",month:"short"})+" "+d.toLocaleTimeString("es-CL",{hour:"2-digit",minute:"2-digit"});
+      score=fmtDate(e.dateEvent,e.strTime);
     }
     return `<div class="match-ticket">
       <div class="match-teams">${home} vs ${away}${live?' <span class="badge-live">EN VIVO</span>':''}</div>
@@ -272,13 +293,13 @@
     return `<div class="ticket">${tag?`<span class="stub-tag">${tag}</span>`:""}${inner}</div>`;
   }
 
-  // ---------- clubs ----------
   async function renderMatches(){
     const el=document.getElementById("matchesList");
     const clubs=await getData("clubs",defaultClubs);
     let html="";
     for(const club of clubs){
-      const id=TSDB_TEAMS[club.name];
+      let id=null;
+      try{ id=await getTeamId(club.name); }catch(err){}
       if(!id){
         html+=`<div class="match-ticket"><div class="match-teams">${club.name}</div><div class="match-score">--</div><div class="match-meta">Sin datos en vivo todavía</div></div>`;
         continue;
@@ -290,10 +311,13 @@
         ]);
         const fin=(past.results||[]).slice(-2);
         const sch=(next.events||[]).slice(0,1);
-        fin.forEach(e=>html+=tsMatchCard(e));
-        sch.forEach(e=>html+=tsMatchCard(e));
-        if(!fin.length&&!sch.length)
+        if(fin.length||sch.length){
+          html+=`<div class="match-meta" style="margin:10px 0 4px;opacity:.6;font-size:12px;text-transform:uppercase;letter-spacing:1px;">${club.name}</div>`;
+          fin.forEach(e=>html+=tsMatchCard(e));
+          sch.forEach(e=>html+=tsMatchCard(e));
+        } else {
           html+=`<div class="match-ticket"><div class="match-teams">${club.name}</div><div class="match-meta">Sin partidos recientes</div></div>`;
+        }
       }catch(e){
         html+=`<div class="match-ticket"><div class="match-teams">${club.name}</div><div class="match-meta">Error: ${e.message}</div></div>`;
       }
@@ -301,7 +325,6 @@
     el.innerHTML=html;
   }
 
-  // ---------- selecciones ----------
   const WC_MAP={Chile:"Chile",España:"Spain",Argentina:"Argentina",Brasil:"Brazil",Francia:"France"};
 
   async function renderWCMatches(){
@@ -325,7 +348,6 @@
     el.innerHTML=html;
   }
 
-  // ---------- mundial groups ----------
   function buildStandings(events){
     const groups={},teams={};
     events.filter(e=>e.strStatus==="Match Finished"&&e.strRound&&e.strRound.toLowerCase().includes("group")).forEach(e=>{
@@ -392,13 +414,12 @@
       const away=e.strAwayTeam||"Por definir";
       const tbd=!e.strHomeTeam||!e.strAwayTeam;
       const finished=e.strStatus==="Match Finished";
-      let score=e.dateEvent||"Por confirmar";
+      let score=fmtDate(e.dateEvent,e.strTime);
       if(finished) score=(e.intHomeScore??"-")+" - "+(e.intAwayScore??"-");
       return `<div class="bracket-pair"><div class="vs-row ${tbd?'tbd':''}">${home}</div><div class="vs-row ${tbd?'tbd':''}">vs ${away}</div><div class="bp-date">${score}</div></div>`;
     }).join("")+`</div>`;
   }
 
-  // ---------- players ----------
   async function renderPlayers(){
     const players=await getData("players",defaultPlayers);
     document.getElementById("countPlayers").textContent=players.length;
@@ -417,7 +438,6 @@
     };
   }
 
-  // ---------- clubs ----------
   async function renderClubs(){
     const clubs=await getData("clubs",defaultClubs);
     const grid=document.getElementById("clubsGrid");
@@ -435,14 +455,12 @@
     };
   }
 
-  // ---------- flags ----------
   function renderFlags(){
     document.getElementById("flagsGrid").innerHTML=flags.map(f=>`
       <div class="flag-card"><span class="flag-emoji">${f.emoji}</span><span class="name">${f.name}</span></div>
     `).join("");
   }
 
-  // ---------- pitch ----------
   async function renderPitch(){
     const lineup=await getData("lineup",{});
     const pitch=document.getElementById("pitch");
