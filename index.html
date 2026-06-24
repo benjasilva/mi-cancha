@@ -199,7 +199,6 @@
 
 <script>
 (function(){
-  // ---------- storage ----------
   async function getData(key,fallback){
     try{const r=await window.storage.get(key);return r?JSON.parse(r.value):fallback;}catch(e){return fallback;}
   }
@@ -226,7 +225,6 @@
   ];
   const positions=["POR","DEF","DEF","DEF","DEF","MED","MED","MED","DEL","DEL","DEL"];
 
-  // ---------- API ----------
   const FD_KEY="17b9e7ee00e14296b4fb2cfe81270763";
   const FD_TEAMS={"FC Barcelona":81,"Real Madrid":86,"Manchester City":65};
   const CACHE_MS=15*60*1000;
@@ -242,14 +240,12 @@
     return data;
   }
 
-  // WC matches fetched once, shared
   let _wc=null;
   function fetchWC(){
     if(!_wc) _wc=apiFetch("competitions/WC/matches").then(d=>d.matches||[]).catch(()=>[]);
     return _wc;
   }
 
-  // ---------- helpers ----------
   function fmtDate(s){return new Date(s).toLocaleDateString("es-CL",{day:"numeric",month:"short"});}
   function fmtTime(s){return new Date(s).toLocaleTimeString("es-CL",{hour:"2-digit",minute:"2-digit"});}
 
@@ -275,7 +271,6 @@
     return `<div class="ticket">${tag?`<span class="stub-tag">${tag}</span>`:""}${inner}</div>`;
   }
 
-  // ---------- clubs ----------
   async function renderMatches(){
     const el=document.getElementById("matchesList");
     const clubs=await getData("clubs",defaultClubs);
@@ -294,13 +289,12 @@
         if(!fin.matches?.length&&!sch.matches?.length)
           html+=`<div class="match-ticket"><div class="match-teams">${club.name}</div><div class="match-meta">Sin partidos recientes</div></div>`;
       }catch(e){
-        html+=`<div class="match-ticket"><div class="match-teams">${club.name}</div><div class="match-meta">Error cargando: ${e.message}</div></div>`;
+        html+=`<div class="match-ticket"><div class="match-teams">${club.name}</div><div class="match-meta">Error: ${e.message}</div></div>`;
       }
     }
     el.innerHTML=html;
   }
 
-  // ---------- selecciones ----------
   const WC_MAP={Chile:"Chile",España:"Spain",Argentina:"Argentina",Brasil:"Brazil",Francia:"France"};
 
   async function renderWCMatches(){
@@ -324,7 +318,6 @@
     el.innerHTML=html;
   }
 
-  // ---------- mundial groups ----------
   function buildStandings(matches){
     const groups={},teams={};
     matches.filter(m=>m.stage==="GROUP_STAGE"&&m.status==="FINISHED").forEach(m=>{
@@ -396,7 +389,6 @@
     }).join("")+`</div>`;
   }
 
-  // ---------- players ----------
   async function renderPlayers(){
     const players=await getData("players",defaultPlayers);
     document.getElementById("countPlayers").textContent=players.length;
@@ -415,7 +407,6 @@
     };
   }
 
-  // ---------- clubs ----------
   async function renderClubs(){
     const clubs=await getData("clubs",defaultClubs);
     const grid=document.getElementById("clubsGrid");
@@ -433,14 +424,12 @@
     };
   }
 
-  // ---------- flags ----------
   function renderFlags(){
     document.getElementById("flagsGrid").innerHTML=flags.map(f=>`
       <div class="flag-card"><span class="flag-emoji">${f.emoji}</span><span class="name">${f.name}</span></div>
     `).join("");
   }
 
-  // ---------- pitch ----------
   async function renderPitch(){
     const lineup=await getData("lineup",{});
     const pitch=document.getElementById("pitch");
@@ -463,13 +452,11 @@
     if(confirm("¿Borrar todo tu 11 ideal?")){await setData("lineup",{});renderPitch();}
   };
 
-  // ---------- init — cargar en orden para no exceder límite de API ----------
   async function init(){
     renderPlayers();
     renderClubs();
     renderFlags();
     renderPitch();
-    // Clubes primero (6 llamadas), luego Mundial (1 llamada compartida)
     await renderMatches();
     renderWCMatches();
     renderWCGroups();
