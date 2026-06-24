@@ -473,19 +473,22 @@
 
   const WC_NAME_MAP = { Chile:"Chile", España:"Spain", Argentina:"Argentina", Brasil:"Brazil", Francia:"France" };
 
-  async function getWCMatches(){
-    return (await fdFetch("competitions/WC/matches")).matches || [];
+  // Fetch WC matches once and share across all sections
+  let _wcMatchesPromise = null;
+  function getWCMatches(){
+    if(!_wcMatchesPromise){
+      _wcMatchesPromise = fdFetch("competitions/WC/matches")
+        .then(d => d.matches || [])
+        .catch(() => []);
+    }
+    return _wcMatchesPromise;
   }
 
   async function renderWCMatches(){
     const container = document.getElementById("wcMatchesList");
     container.innerHTML = `<div class="note-box">Cargando partidos del Mundial…</div>`;
-    let all;
-    try{ all = await getWCMatches(); }
-    catch(e){
-      container.innerHTML = `<div class="note-box">No se pudieron cargar los partidos del Mundial.</div>`;
-      return;
-    }
+    const all = await getWCMatches();
+    if(!all.length){ container.innerHTML = `<div class="note-box">No se pudieron cargar los partidos del Mundial.</div>`; return; }
     let html = "";
     for(const f of flags){
       const eng = WC_NAME_MAP[f.name];
@@ -502,78 +505,97 @@
     container.innerHTML = html;
   }
 
+  // Derive group standings from match results (no extra API call needed)
+  function buildStandings(matches){
+    const groups = {};
+    const teams = {};
+    matches.filter(m => m.stage==="GROUP_STAGE" && m.status==="FINISHED").forEach(m => {
+      const grp = m.group || "Grupo";
+      if(!groups[grp]) groups[grp] = new Set();
+      [m.homeTeam, m.awayTeam].forEach(t => {
+        if(!t?.name) return;
+        groups[grp].add(t.name);
+        if(!teams[t.name]) teams[t.name] = {name:t.shortName||t.name, pj:0, pts:0, gf:0, gc:0};
+      });
+      const hs = m.score?.fullTime?.home ?? 0;
+      const as = m.score?.fullTime?.away ?? 0;
+      const ht = teams[m.homeTeam?.name];
+      const at = teams[m.awayTeam?.name];
+      if(ht){ ht.pj++; ht.gf+=hs; ht.gc+=as; ht.pts += hs>as?3:hs===as?1:0; }
+      if(at){ at.pj++; at.gf+=as; at.gc+=hs; at.pts += as>hs?3:as===hs?1:0; }
+    });
+    return Object.entries(groups).map(([grp, teamSet]) => ({
+      group: grp,
+      table: [...teamSet]
+        .map(n => teams[n])
+        .filter(Boolean)
+        .sort((a,b) => b.pts-a.pts || (b.gf-b.gc)-(a.gf-a.gc))
+    }));
+  }
+
   async function renderWCGroups(){
     const el = document.getElementById("wcGroups");
-    try{
-      const data = await fdFetch("competitions/WC/standings");
-      const standings = data.standings || [];
-      if(!standings.length){ el.innerHTML = `<div class="note-box">Grupos aún no disponibles.</div>`; return; }
-      el.innerHTML = standings.map(g => {
-        const rows = (g.table||[]).map((t,i) =>
-          `<tr class="${i<2?'qualified':''}">
-            <td>${t.team?.shortName||t.team?.name||"?"}</td>
-            <td>${t.playedGames}</td><td>${t.points}</td>
-            <td>${t.goalDifference>=0?'+':''}${t.goalDifference}</td>
-          </tr>`
-        ).join("");
-        return `<div class="ticket">
-          <p class="player-name" style="font-size:18px;">${g.group||"Grupo"}</p>
-          <table class="group-table">
-            <tr><th>Equipo</th><th>PJ</th><th>Pts</th><th>Dif</th></tr>
-            ${rows}
-          </table>
-        </div>`;
+    const all = await getWCMatches();
+    if(!all.length){ el.innerHTML = `<div class="note-box">No se pudieron cargar los grupos.</div>`; return; }
+    const standings = buildStandings(all);
+    if(!standings.length){ el.innerHTML = `<div class="note-box">Grupos aún sin resultados — vuelve cuando empiecen los partidos.</div>`; return; }
+    el.innerHTML = standings.map(g => {
+      const rows = g.table.map((t,i) => {
+        const dif = (t.gf-t.gc);
+        return `<tr class="${i<2?'qualified':''}">
+          <td>${t.name}</td><td>${t.pj}</td><td>${t.pts}</td>
+          <td>${dif>=0?'+':''}${dif}</td>
+        </tr>`;
       }).join("");
-    }catch(e){
-      el.innerHTML = `<div class="note-box">No se pudieron cargar los grupos (${e.message}).</div>`;
-    }
+      return `<div class="ticket">
+        <p class="player-name" style="font-size:18px;">${g.group}</p>
+        <table class="group-table">
+          <tr><th>Equipo</th><th>PJ</th><th>Pts</th><th>Dif</th></tr>
+          ${rows}
+        </table>
+      </div>`;
+    }).join("");
   }
 
   async function renderWCSchedule(){
     const el = document.getElementById("wcSchedule");
-    try{
-      const all = await getWCMatches();
-      const upcoming = all.filter(m => m.status==="SCHEDULED"||m.status==="TIMED"||m.status==="IN_PLAY"||m.status==="PAUSED").slice(0,20);
-      if(!upcoming.length){ el.innerHTML = `<div class="note-box">No hay partidos próximos disponibles.</div>`; return; }
-      const byDay = {};
-      upcoming.forEach(m => {
-        const day = new Date(m.utcDate).toLocaleDateString("es-CL",{weekday:"long",day:"numeric",month:"long"});
-        if(!byDay[day]) byDay[day]=[];
-        byDay[day].push(m);
-      });
-      el.innerHTML = Object.entries(byDay).map(([day,ms]) =>
-        `<div class="sched-day">${day}</div>` + ms.map(m => matchCard(m)).join("")
-      ).join("");
-    }catch(e){
-      el.innerHTML = `<div class="note-box">No se pudo cargar el calendario (${e.message}).</div>`;
-    }
+    const all = await getWCMatches();
+    if(!all.length){ el.innerHTML = `<div class="note-box">No se pudo cargar el calendario.</div>`; return; }
+    const upcoming = all.filter(m => m.status==="SCHEDULED"||m.status==="TIMED"||m.status==="IN_PLAY"||m.status==="PAUSED").slice(0,20);
+    if(!upcoming.length){ el.innerHTML = `<div class="note-box">No hay partidos próximos disponibles.</div>`; return; }
+    const byDay = {};
+    upcoming.forEach(m => {
+      const day = new Date(m.utcDate).toLocaleDateString("es-CL",{weekday:"long",day:"numeric",month:"long"});
+      if(!byDay[day]) byDay[day]=[];
+      byDay[day].push(m);
+    });
+    el.innerHTML = Object.entries(byDay).map(([day,ms]) =>
+      `<div class="sched-day">${day}</div>` + ms.map(m => matchCard(m)).join("")
+    ).join("");
   }
 
   async function renderWCBracket(){
     const el = document.getElementById("wcBracket");
-    try{
-      const all = await getWCMatches();
-      const r16 = all.filter(m => m.stage==="ROUND_OF_16"||m.stage==="LAST_16");
-      if(!r16.length){
-        el.innerHTML = `<div class="note-box">Los cruces de Dieciseisavos se definirán al terminar la fase de grupos. Vuelve a revisar cuando estén listos.</div>`;
-        return;
-      }
-      el.innerHTML = `<div class="bracket-scroll">` +
-        r16.map(m => {
-          const home = m.homeTeam?.shortName||m.homeTeam?.name||"Por definir";
-          const away = m.awayTeam?.shortName||m.awayTeam?.name||"Por definir";
-          const isTBD = !m.homeTeam?.name || !m.awayTeam?.name;
-          let score = fmtDate(m.utcDate);
-          if(m.status==="FINISHED"){ score = (m.score?.fullTime?.home??"-")+" - "+(m.score?.fullTime?.away??"-"); }
-          return `<div class="bracket-pair">
-            <div class="vs-row ${isTBD?'tbd':''}">${home}</div>
-            <div class="vs-row ${isTBD?'tbd':''}">vs ${away}</div>
-            <div class="bp-date">${score}</div>
-          </div>`;
-        }).join("") + `</div>`;
-    }catch(e){
-      el.innerHTML = `<div class="note-box">No se pudo cargar la llave (${e.message}).</div>`;
+    const all = await getWCMatches();
+    if(!all.length){ el.innerHTML = `<div class="note-box">No se pudo cargar la llave.</div>`; return; }
+    const r16 = all.filter(m => m.stage==="ROUND_OF_16"||m.stage==="LAST_16");
+    if(!r16.length){
+      el.innerHTML = `<div class="note-box">Los cruces de Dieciseisavos se definirán al terminar la fase de grupos. Vuelve a revisar cuando estén listos.</div>`;
+      return;
     }
+    el.innerHTML = `<div class="bracket-scroll">` +
+      r16.map(m => {
+        const home = m.homeTeam?.shortName||m.homeTeam?.name||"Por definir";
+        const away = m.awayTeam?.shortName||m.awayTeam?.name||"Por definir";
+        const isTBD = !m.homeTeam?.name || !m.awayTeam?.name;
+        let score = fmtDate(m.utcDate);
+        if(m.status==="FINISHED"){ score = (m.score?.fullTime?.home??"-")+" - "+(m.score?.fullTime?.away??"-"); }
+        return `<div class="bracket-pair">
+          <div class="vs-row ${isTBD?'tbd':''}">${home}</div>
+          <div class="vs-row ${isTBD?'tbd':''}">vs ${away}</div>
+          <div class="bp-date">${score}</div>
+        </div>`;
+      }).join("") + `</div>`;
   }
 
   function ticketHTML(inner, tag){
