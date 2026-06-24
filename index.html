@@ -7,234 +7,89 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --navy:#0D1B2A;
-    --navy-2:#142943;
-    --cream:#F2EFE6;
-    --amber:#FFC83D;
-    --grass:#3F8F5F;
-    --crimson:#C8553D;
-    --line: rgba(242,239,230,0.14);
-  }
+  :root{--navy:#0D1B2A;--navy-2:#142943;--cream:#F2EFE6;--amber:#FFC83D;--grass:#3F8F5F;--crimson:#C8553D;--line:rgba(242,239,230,0.14);}
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--navy);
-    color:var(--cream);
-    font-family:'Work Sans', sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  .display{font-family:'Teko', sans-serif; font-weight:700; letter-spacing:0.5px; text-transform:uppercase;}
-  .mono{font-family:'JetBrains Mono', monospace;}
-
+  body{margin:0;background:var(--navy);color:var(--cream);font-family:'Work Sans',sans-serif;-webkit-font-smoothing:antialiased;}
+  .display{font-family:'Teko',sans-serif;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;}
+  .mono{font-family:'JetBrains Mono',monospace;}
   a{color:inherit;}
-
-  header{
-    position:sticky; top:0; z-index:50;
-    background:var(--navy);
-    border-bottom:1px solid var(--line);
-  }
-  .topbar{
-    display:flex; align-items:center; justify-content:space-between;
-    max-width:1100px; margin:0 auto; padding:14px 20px;
-  }
-  .brand{display:flex; align-items:center; gap:10px;}
-  .brand-mark{ flex-shrink:0; }
-  .brand-name{font-size:26px; letter-spacing:1px;}
-  nav{display:flex; gap:4px; overflow-x:auto; max-width:1100px; margin:0 auto; padding:0 20px 0; -ms-overflow-style:none; scrollbar-width:none;}
+  header{position:sticky;top:0;z-index:50;background:var(--navy);border-bottom:1px solid var(--line);}
+  .topbar{display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto;padding:14px 20px;}
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand-mark{flex-shrink:0;}
+  .brand-name{font-size:26px;letter-spacing:1px;}
+  nav{display:flex;gap:4px;overflow-x:auto;max-width:1100px;margin:0 auto;padding:0 20px;-ms-overflow-style:none;scrollbar-width:none;}
   nav::-webkit-scrollbar{display:none;}
-  nav a{
-    flex:0 0 auto;
-    font-size:14px; font-weight:600; text-decoration:none;
-    color:var(--cream); opacity:0.75;
-    padding:10px 14px; border-bottom:3px solid transparent;
-    white-space:nowrap;
-  }
-  nav a:hover{opacity:1; border-color:var(--amber);}
-
-  .hero{
-    max-width:1100px; margin:0 auto; padding:48px 20px 36px;
-    display:grid; grid-template-columns:1.1fr 0.9fr; gap:32px; align-items:center;
-  }
-  .hero-eyebrow{
-    font-size:13px; letter-spacing:2px; text-transform:uppercase;
-    color:var(--amber); font-weight:600; margin:0 0 10px;
-  }
-  .hero h1{
-    font-size:64px; line-height:0.95; margin:0 0 14px;
-  }
-  .hero p{font-size:16px; line-height:1.55; opacity:0.85; max-width:480px; margin:0 0 22px;}
-  .scoreboard{
-    background:var(--navy-2);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:22px;
-    box-shadow:0 12px 30px rgba(0,0,0,0.35);
-  }
-  .sb-row{display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px dashed var(--line);}
+  nav a{flex:0 0 auto;font-size:14px;font-weight:600;text-decoration:none;color:var(--cream);opacity:.75;padding:10px 14px;border-bottom:3px solid transparent;white-space:nowrap;}
+  nav a:hover{opacity:1;border-color:var(--amber);}
+  .hero{max-width:1100px;margin:0 auto;padding:48px 20px 36px;display:grid;grid-template-columns:1.1fr 0.9fr;gap:32px;align-items:center;}
+  .hero-eyebrow{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--amber);font-weight:600;margin:0 0 10px;}
+  .hero h1{font-size:64px;line-height:.95;margin:0 0 14px;}
+  .hero p{font-size:16px;line-height:1.55;opacity:.85;max-width:480px;margin:0 0 22px;}
+  .scoreboard{background:var(--navy-2);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 12px 30px rgba(0,0,0,.35);}
+  .sb-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line);}
   .sb-row:last-child{border-bottom:none;}
-  .sb-label{font-size:12px; letter-spacing:1px; text-transform:uppercase; opacity:0.6;}
+  .sb-label{font-size:12px;letter-spacing:1px;text-transform:uppercase;opacity:.6;}
   .sb-value{font-size:22px;}
   .sb-value.amber{color:var(--amber);}
-
-  .btn{
-    display:inline-block; border:none; cursor:pointer;
-    background:var(--amber); color:var(--navy);
-    font-weight:700; font-size:14px;
-    padding:12px 20px; border-radius:8px;
-    text-decoration:none;
-  }
+  .btn{display:inline-block;border:none;cursor:pointer;background:var(--amber);color:var(--navy);font-weight:700;font-size:14px;padding:12px 20px;border-radius:8px;text-decoration:none;}
   .btn:hover{background:#ffd566;}
-  .btn-ghost{
-    background:transparent; color:var(--cream);
-    border:1px solid var(--line);
-  }
-  .btn-ghost:hover{border-color:var(--amber); color:var(--amber);}
-
-  section{max-width:1100px; margin:0 auto; padding:46px 20px;}
-  .section-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:22px; flex-wrap:wrap; gap:10px;}
-  .section-head h2{font-size:34px; margin:0;}
-  .section-head .hint{font-size:13px; opacity:0.6; max-width:340px;}
-
-  .grid{display:grid; gap:18px;}
-  .grid.cards{grid-template-columns:repeat(auto-fill, minmax(220px,1fr));}
-
-  .ticket{
-    position:relative;
-    background:var(--navy-2);
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:18px;
-    overflow:hidden;
-  }
-  .ticket::before, .ticket::after{
-    content:""; position:absolute; width:18px; height:18px;
-    background:var(--navy); border-radius:50%;
-    top:50%; transform:translateY(-50%);
-  }
+  .btn-ghost{background:transparent;color:var(--cream);border:1px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  section{max-width:1100px;margin:0 auto;padding:46px 20px;}
+  .section-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:22px;flex-wrap:wrap;gap:10px;}
+  .section-head h2{font-size:34px;margin:0;}
+  .section-head .hint{font-size:13px;opacity:.6;max-width:340px;}
+  .grid{display:grid;gap:18px;}
+  .grid.cards{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));}
+  .ticket{position:relative;background:var(--navy-2);border:1px solid var(--line);border-radius:10px;padding:18px;overflow:hidden;}
+  .ticket::before,.ticket::after{content:"";position:absolute;width:18px;height:18px;background:var(--navy);border-radius:50%;top:50%;transform:translateY(-50%);}
   .ticket::before{left:-9px;}
   .ticket::after{right:-9px;}
-  .ticket .perf{
-    border-top:1px dashed var(--line);
-    margin:14px 0;
-  }
-  .ticket .stub-tag{
-    position:absolute; top:10px; right:14px;
-    font-size:10px; letter-spacing:1px; text-transform:uppercase;
-    color:var(--amber); opacity:0.8;
-  }
-
-  .player-name{font-size:22px; margin:0 0 2px;}
-  .player-club{font-size:13px; opacity:0.7; margin:0 0 12px;}
-  .stat-row{display:flex; justify-content:space-between; font-size:13px; padding:4px 0;}
-  .stat-row .v{font-family:'JetBrains Mono', monospace; color:var(--amber);}
-
-  .club-crest-row{display:flex; align-items:center; gap:12px; margin-bottom:8px;}
-  .crest{
-    width:42px; height:42px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    font-size:14px; font-weight:700; color:var(--navy);
-  }
-
-  .add-card{
-    display:flex; align-items:center; justify-content:center;
-    border:1px dashed var(--line); border-radius:10px;
-    min-height:140px; cursor:pointer;
-    color:var(--cream); opacity:0.6; font-size:14px; text-align:center; padding:18px;
-  }
-  .add-card:hover{opacity:1; border-color:var(--amber); color:var(--amber);}
-
-  .sub-display{
-    font-family:'Teko', sans-serif; font-weight:600; text-transform:uppercase;
-    font-size:22px; letter-spacing:0.5px; color:var(--amber);
-    margin:30px 0 6px;
-  }
-  .flag-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:14px;}
+  .ticket .perf{border-top:1px dashed var(--line);margin:14px 0;}
+  .ticket .stub-tag{position:absolute;top:10px;right:14px;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--amber);opacity:.8;}
+  .player-name{font-size:22px;margin:0 0 2px;}
+  .player-club{font-size:13px;opacity:.7;margin:0 0 12px;}
+  .stat-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;}
+  .stat-row .v{font-family:'JetBrains Mono',monospace;color:var(--amber);}
+  .club-crest-row{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+  .crest{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--navy);}
+  .add-card{display:flex;align-items:center;justify-content:center;border:1px dashed var(--line);border-radius:10px;min-height:140px;cursor:pointer;color:var(--cream);opacity:.6;font-size:14px;text-align:center;padding:18px;}
+  .add-card:hover{opacity:1;border-color:var(--amber);color:var(--amber);}
+  .sub-display{font-family:'Teko',sans-serif;font-weight:600;text-transform:uppercase;font-size:22px;letter-spacing:.5px;color:var(--amber);margin:30px 0 6px;}
+  .flag-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px;}
   .wc-matches{margin-top:18px;}
-
-  .group-table{width:100%; border-collapse:collapse; font-size:13px;}
-  .group-table th, .group-table td{padding:6px 4px; text-align:center; border-bottom:1px solid var(--line);}
-  .group-table th{opacity:0.6; font-weight:600; font-size:11px; text-transform:uppercase;}
-  .group-table td:first-child, .group-table th:first-child{text-align:left;}
+  .group-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .group-table th,.group-table td{padding:6px 4px;text-align:center;border-bottom:1px solid var(--line);}
+  .group-table th{opacity:.6;font-weight:600;font-size:11px;text-transform:uppercase;}
+  .group-table td:first-child,.group-table th:first-child{text-align:left;}
   .group-table tr.qualified td:first-child{color:var(--amber);}
-
-  .sched-day{font-size:12px; letter-spacing:1px; text-transform:uppercase; opacity:0.55; margin:14px 0 6px;}
-
-  .bracket-scroll{display:flex; gap:14px; overflow-x:auto; padding-bottom:6px; -webkit-overflow-scrolling:touch;}
-  .bracket-pair{
-    flex:0 0 220px;
-    background:var(--navy-2); border:1px solid var(--line); border-radius:10px;
-    padding:12px; font-size:13px;
-  }
-  .bracket-pair .vs-row{display:flex; justify-content:space-between; padding:4px 0;}
-  .bracket-pair .vs-row.tbd{opacity:0.5; font-style:italic;}
-  .bracket-pair .bp-date{font-size:11px; opacity:0.5; margin-top:6px; text-transform:uppercase; letter-spacing:1px;}
-
-  .flag-card{
-    background:var(--navy-2); border:1px solid var(--line); border-radius:10px;
-    padding:16px; text-align:center;
-  }
-  .flag-emoji{font-size:34px; display:block; margin-bottom:8px;}
-  .flag-card .name{font-size:14px; font-weight:600;}
-
-  .match-ticket{
-    display:flex; align-items:center; justify-content:space-between;
-    background:var(--navy-2); border:1px solid var(--line); border-radius:10px;
-    padding:16px 18px; margin-bottom:12px; gap:14px; flex-wrap:wrap;
-  }
-  .match-teams{display:flex; align-items:center; gap:10px; font-weight:600; font-size:15px;}
-  .match-score{font-family:'JetBrains Mono', monospace; font-size:20px; color:var(--amber);}
-  .match-meta{font-size:11px; opacity:0.55; letter-spacing:1px; text-transform:uppercase;}
-  .badge-live{
-    background:var(--crimson); color:var(--cream); font-size:10px; font-weight:700;
-    padding:3px 8px; border-radius:20px; letter-spacing:1px;
-  }
-  .note-box{
-    border:1px solid var(--line); border-radius:10px; padding:14px 16px;
-    font-size:13px; opacity:0.7; margin-top:14px; line-height:1.5;
-  }
-
-  .pitch-wrap{
-    background:var(--grass);
-    background-image:
-      repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0 40px, transparent 40px 80px);
-    border-radius:14px;
-    border:2px solid rgba(242,239,230,0.25);
-    position:relative;
-    padding:24px 12px;
-    min-height:560px;
-    display:flex; flex-direction:column; justify-content:space-between;
-  }
-  .pitch-wrap::before{
-    content:""; position:absolute; left:50%; top:50%;
-    width:120px; height:120px; border:2px solid rgba(242,239,230,0.25);
-    border-radius:50%; transform:translate(-50%,-50%);
-  }
-  .pitch-row{display:flex; justify-content:center; gap:14px; flex-wrap:wrap; z-index:2;}
-  .slot{
-    width:90px; min-height:64px;
-    background:rgba(13,27,42,0.55);
-    border:1px solid rgba(242,239,230,0.4);
-    border-radius:8px;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    cursor:pointer; padding:6px; text-align:center;
-  }
+  .sched-day{font-size:12px;letter-spacing:1px;text-transform:uppercase;opacity:.55;margin:14px 0 6px;}
+  .bracket-scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch;}
+  .bracket-pair{flex:0 0 220px;background:var(--navy-2);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:13px;}
+  .bracket-pair .vs-row{display:flex;justify-content:space-between;padding:4px 0;}
+  .bracket-pair .vs-row.tbd{opacity:.5;font-style:italic;}
+  .bracket-pair .bp-date{font-size:11px;opacity:.5;margin-top:6px;text-transform:uppercase;letter-spacing:1px;}
+  .flag-card{background:var(--navy-2);border:1px solid var(--line);border-radius:10px;padding:16px;text-align:center;}
+  .flag-emoji{font-size:34px;display:block;margin-bottom:8px;}
+  .flag-card .name{font-size:14px;font-weight:600;}
+  .match-ticket{display:flex;align-items:center;justify-content:space-between;background:var(--navy-2);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:12px;gap:14px;flex-wrap:wrap;}
+  .match-teams{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;}
+  .match-score{font-family:'JetBrains Mono',monospace;font-size:20px;color:var(--amber);}
+  .match-meta{font-size:11px;opacity:.55;letter-spacing:1px;text-transform:uppercase;}
+  .badge-live{background:var(--crimson);color:var(--cream);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:1px;}
+  .note-box{border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:13px;opacity:.7;margin-top:14px;line-height:1.5;}
+  .pitch-wrap{background:var(--grass);background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0 40px,transparent 40px 80px);border-radius:14px;border:2px solid rgba(242,239,230,.25);position:relative;padding:24px 12px;min-height:560px;display:flex;flex-direction:column;justify-content:space-between;}
+  .pitch-wrap::before{content:"";position:absolute;left:50%;top:50%;width:120px;height:120px;border:2px solid rgba(242,239,230,.25);border-radius:50%;transform:translate(-50%,-50%);}
+  .pitch-row{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;z-index:2;}
+  .slot{width:90px;min-height:64px;background:rgba(13,27,42,.55);border:1px solid rgba(242,239,230,.4);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding:6px;text-align:center;}
   .slot:hover{border-color:var(--amber);}
-  .slot .pos{font-size:10px; letter-spacing:1px; opacity:0.7;}
-  .slot .nm{font-size:13px; font-weight:600; margin-top:2px; word-break:break-word;}
-
-  .mi11-actions{display:flex; gap:10px; margin-top:16px; flex-wrap:wrap;}
-
-  footer{
-    max-width:1100px; margin:0 auto; padding:30px 20px 60px;
-    font-size:12px; opacity:0.5; border-top:1px solid var(--line); margin-top:20px;
-  }
-
-  @media (max-width:760px){
-    .hero{grid-template-columns:1fr;}
-    .hero h1{font-size:48px;}
-  }
+  .slot .pos{font-size:10px;letter-spacing:1px;opacity:.7;}
+  .slot .nm{font-size:13px;font-weight:600;margin-top:2px;word-break:break-word;}
+  .mi11-actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
+  footer{max-width:1100px;margin:0 auto;padding:30px 20px 60px;font-size:12px;opacity:.5;border-top:1px solid var(--line);margin-top:20px;}
+  @media(max-width:760px){.hero{grid-template-columns:1fr;}.hero h1{font-size:48px;}}
 </style>
 </head>
 <body>
@@ -243,27 +98,21 @@
   <div class="topbar">
     <div class="brand">
       <svg class="brand-mark" viewBox="0 0 100 100" width="34" height="34" aria-hidden="true">
-      <defs>
-        <clipPath id="ballClip"><circle cx="50" cy="50" r="47"/></clipPath>
-      </defs>
-      <g clip-path="url(#ballClip)">
-        <rect x="0" y="0" width="100" height="100" fill="#F2EFE6"/>
-        <path d="M -10,30 C 20,15 35,45 30,70 C 25,95 0,90 -10,85 Z" fill="#D7263D"/>
-        <path d="M 35,-10 C 20,20 55,30 75,15 C 95,0 90,-15 80,-15 Z" fill="#1F5FA6"/>
-        <path d="M 110,40 C 80,30 65,60 80,80 C 95,100 115,95 115,85 Z" fill="#2E8B57"/>
-        <path d="M 60,115 C 55,85 25,80 10,95 C -5,110 5,120 15,120 Z" fill="#1F5FA6"/>
-        <path d="M -10,30 C 20,15 35,45 30,70 C 25,95 0,90 -10,85"
-              fill="none" stroke="#F2EFE6" stroke-width="2.5"/>
-        <path d="M 35,-10 C 20,20 55,30 75,15 C 95,0 90,-15 80,-15"
-              fill="none" stroke="#F2EFE6" stroke-width="2.5"/>
-        <path d="M 110,40 C 80,30 65,60 80,80 C 95,100 115,95 115,85"
-              fill="none" stroke="#F2EFE6" stroke-width="2.5"/>
-        <path d="M 60,115 C 55,85 25,80 10,95 C -5,110 5,120 15,120"
-              fill="none" stroke="#F2EFE6" stroke-width="2.5"/>
-        <circle cx="50" cy="50" r="4.5" fill="#FFC83D"/>
-      </g>
-      <circle cx="50" cy="50" r="47" fill="none" stroke="#F2EFE6" stroke-width="3"/>
-    </svg>
+        <defs><clipPath id="ballClip"><circle cx="50" cy="50" r="47"/></clipPath></defs>
+        <g clip-path="url(#ballClip)">
+          <rect x="0" y="0" width="100" height="100" fill="#F2EFE6"/>
+          <path d="M -10,30 C 20,15 35,45 30,70 C 25,95 0,90 -10,85 Z" fill="#D7263D"/>
+          <path d="M 35,-10 C 20,20 55,30 75,15 C 95,0 90,-15 80,-15 Z" fill="#1F5FA6"/>
+          <path d="M 110,40 C 80,30 65,60 80,80 C 95,100 115,95 115,85 Z" fill="#2E8B57"/>
+          <path d="M 60,115 C 55,85 25,80 10,95 C -5,110 5,120 15,120 Z" fill="#1F5FA6"/>
+          <path d="M -10,30 C 20,15 35,45 30,70 C 25,95 0,90 -10,85" fill="none" stroke="#F2EFE6" stroke-width="2.5"/>
+          <path d="M 35,-10 C 20,20 55,30 75,15 C 95,0 90,-15 80,-15" fill="none" stroke="#F2EFE6" stroke-width="2.5"/>
+          <path d="M 110,40 C 80,30 65,60 80,80 C 95,100 115,95 115,85" fill="none" stroke="#F2EFE6" stroke-width="2.5"/>
+          <path d="M 60,115 C 55,85 25,80 10,95 C -5,110 5,120 15,120" fill="none" stroke="#F2EFE6" stroke-width="2.5"/>
+          <circle cx="50" cy="50" r="4.5" fill="#FFC83D"/>
+        </g>
+        <circle cx="50" cy="50" r="47" fill="none" stroke="#F2EFE6" stroke-width="3"/>
+      </svg>
       <div class="brand-name display">Mi Cancha</div>
     </div>
   </div>
@@ -295,30 +144,21 @@
 
 <section id="jugadores">
   <div class="section-head">
-    <div>
-      <h2 class="display">Jugadores que sigo</h2>
-      <p class="hint">Toca "+ Agregar jugador" para sumar a alguien nuevo a tu lista.</p>
-    </div>
+    <div><h2 class="display">Jugadores que sigo</h2><p class="hint">Toca "+ Agregar jugador" para sumar a alguien nuevo.</p></div>
   </div>
   <div class="grid cards" id="playersGrid"></div>
 </section>
 
 <section id="clubes">
   <div class="section-head">
-    <div>
-      <h2 class="display">Clubes que sigo</h2>
-      <p class="hint">Tu club favorito va primero. Puedes agregar más clubes que te gusten.</p>
-    </div>
+    <div><h2 class="display">Clubes que sigo</h2><p class="hint">Tu club favorito va primero.</p></div>
   </div>
   <div class="grid cards" id="clubsGrid"></div>
 </section>
 
 <section id="selecciones">
   <div class="section-head">
-    <div>
-      <h2 class="display">Selecciones favoritas</h2>
-      <p class="hint">Resultados reales del Mundial 2026 para las que están participando.</p>
-    </div>
+    <div><h2 class="display">Selecciones favoritas</h2><p class="hint">Resultados reales del Mundial 2026.</p></div>
   </div>
   <div class="flag-grid" id="flagsGrid"></div>
   <div id="wcMatchesList" class="wc-matches"></div>
@@ -326,40 +166,28 @@
 
 <section id="resultados">
   <div class="section-head">
-    <div>
-      <h2 class="display">Resultados</h2>
-      <p class="hint">Resultados y próximos partidos reales de Barcelona, Real Madrid y Manchester City.</p>
-    </div>
+    <div><h2 class="display">Resultados</h2><p class="hint">Partidos reales de Barcelona, Real Madrid y Manchester City.</p></div>
   </div>
   <div id="matchesList"><div class="note-box">Cargando partidos…</div></div>
-  <div class="note-box">ℹ️ Datos reales para estos 3 clubes (cubiertos gratis por football-data.org). Otros clubes que agregues seguirán mostrando una tarjeta de ejemplo hasta conectarlos también.</div>
+  <div class="note-box">ℹ️ Datos reales para estos 3 clubes. Otros clubes que agregues mostrarán una tarjeta de ejemplo.</div>
 </section>
 
 <section id="mundial">
   <div class="section-head">
-    <div>
-      <h2 class="display">Mundial 2026</h2>
-      <p class="hint">Datos reales del torneo: grupos, próximos partidos y llave de eliminación.</p>
-    </div>
+    <div><h2 class="display">Mundial 2026</h2><p class="hint">Datos reales: grupos, calendario y llave.</p></div>
   </div>
-
   <h3 class="sub-display">Tabla de grupos</h3>
   <div id="wcGroups" class="grid cards"><div class="note-box">Cargando grupos…</div></div>
-
   <h3 class="sub-display">Próximos partidos</h3>
   <div id="wcSchedule"><div class="note-box">Cargando calendario…</div></div>
-
   <h3 class="sub-display">Llave — Dieciseisavos de Final</h3>
-  <p class="hint">Los cruces se confirman al terminar la fase de grupos. Los cupos pendientes se muestran como "Por definir".</p>
+  <p class="hint">Los cruces se confirman al terminar la fase de grupos.</p>
   <div id="wcBracket"><div class="note-box">Cargando llave…</div></div>
 </section>
 
 <section id="mi11">
   <div class="section-head">
-    <div>
-      <h2 class="display">Mi 11 Ideal</h2>
-      <p class="hint">Toca cada posición de la cancha y escribe el nombre del jugador que pondrías ahí. Se guarda automáticamente.</p>
-    </div>
+    <div><h2 class="display">Mi 11 Ideal</h2><p class="hint">Toca cada posición y escribe el jugador. Se guarda automáticamente.</p></div>
   </div>
   <div class="pitch-wrap" id="pitch"></div>
   <div class="mi11-actions">
@@ -367,341 +195,289 @@
   </div>
 </section>
 
-<footer>
-  Hecho con 💛 para los fanáticos del fútbol. Mostrar a amigos siempre con un adulto cerca.
-</footer>
+<footer>Hecho con 💛 para los fanáticos del fútbol. Mostrar a amigos siempre con un adulto cerca.</footer>
 
 <script>
 (function(){
-  async function getData(key, fallback){
-    try{
-      const r = await window.storage.get(key);
-      return r ? JSON.parse(r.value) : fallback;
-    }catch(e){ return fallback; }
+  // ---------- storage ----------
+  async function getData(key,fallback){
+    try{const r=await window.storage.get(key);return r?JSON.parse(r.value):fallback;}catch(e){return fallback;}
   }
-  async function setData(key, value){
-    try{ await window.storage.set(key, JSON.stringify(value)); }catch(e){}
+  async function setData(key,value){
+    try{await window.storage.set(key,JSON.stringify(value));}catch(e){}
   }
 
-  const defaultPlayers = [
-    {name:"Lamine Yamal", club:"FC Barcelona", info:"Extremo · 17 años"},
-    {name:"Jude Bellingham", club:"Real Madrid", info:"Mediocampista"},
-    {name:"Vinícius Júnior", club:"Real Madrid", info:"Extremo"}
+  const defaultPlayers=[
+    {name:"Lamine Yamal",club:"FC Barcelona",info:"Extremo · 17 años"},
+    {name:"Jude Bellingham",club:"Real Madrid",info:"Mediocampista"},
+    {name:"Vinícius Júnior",club:"Real Madrid",info:"Extremo"}
   ];
-  const defaultClubs = [
-    {name:"FC Barcelona", initials:"FCB", color:"#A50044"},
-    {name:"Real Madrid", initials:"RMA", color:"#FEBE10"},
-    {name:"Manchester City", initials:"MCI", color:"#6CABDD"}
+  const defaultClubs=[
+    {name:"FC Barcelona",initials:"FCB",color:"#A50044"},
+    {name:"Real Madrid",initials:"RMA",color:"#FEBE10"},
+    {name:"Manchester City",initials:"MCI",color:"#6CABDD"}
   ];
-  const flags = [
-    {emoji:"🇨🇱", name:"Chile"},
-    {emoji:"🇪🇸", name:"España"},
-    {emoji:"🇦🇷", name:"Argentina"},
-    {emoji:"🇧🇷", name:"Brasil"},
-    {emoji:"🇫🇷", name:"Francia"}
+  const flags=[
+    {emoji:"🇨🇱",name:"Chile"},
+    {emoji:"🇪🇸",name:"España"},
+    {emoji:"🇦🇷",name:"Argentina"},
+    {emoji:"🇧🇷",name:"Brasil"},
+    {emoji:"🇫🇷",name:"Francia"}
   ];
-  const positions = ["POR","DEF","DEF","DEF","DEF","MED","MED","MED","DEL","DEL","DEL"];
+  const positions=["POR","DEF","DEF","DEF","DEF","MED","MED","MED","DEL","DEL","DEL"];
 
-  const FD_API_KEY = "17b9e7ee00e14296b4fb2cfe81270763";
-  const FD_TEAM_IDS = { "FC Barcelona": 81, "Real Madrid": 86, "Manchester City": 65 };
-  const CACHE_MIN = 15;
+  // ---------- API ----------
+  const FD_KEY="17b9e7ee00e14296b4fb2cfe81270763";
+  const FD_TEAMS={"FC Barcelona":81,"Real Madrid":86,"Manchester City":65};
+  const CACHE_MS=15*60*1000;
 
-  async function fdFetch(path){
-    const cacheKey = "fd_" + path.replace(/\W/g,"_");
-    const cached = await getData(cacheKey, null);
-    if(cached && (Date.now() - cached.ts) < CACHE_MIN*60*1000) return cached.data;
-    const res = await fetch("https://api.football-data.org/v4/" + path, {
-      headers: { "X-Auth-Token": FD_API_KEY }
-    });
-    if(!res.ok) throw new Error("fd_" + res.status);
-    const data = await res.json();
-    await setData(cacheKey, { ts: Date.now(), data });
+  async function apiFetch(path){
+    const ck="fd_"+path.replace(/\W/g,"_");
+    const cached=await getData(ck,null);
+    if(cached&&Date.now()-cached.ts<CACHE_MS) return cached.data;
+    const res=await fetch("https://api.football-data.org/v4/"+path,{headers:{"X-Auth-Token":FD_KEY}});
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    const data=await res.json();
+    await setData(ck,{ts:Date.now(),data});
     return data;
   }
 
-  function fmtDate(utcStr){
-    return new Date(utcStr).toLocaleDateString("es-CL", {day:"numeric", month:"short"});
+  // WC matches fetched once, shared
+  let _wc=null;
+  function fetchWC(){
+    if(!_wc) _wc=apiFetch("competitions/WC/matches").then(d=>d.matches||[]).catch(()=>[]);
+    return _wc;
   }
-  function fmtTime(utcStr){
-    return new Date(utcStr).toLocaleTimeString("es-CL", {hour:"2-digit", minute:"2-digit"});
-  }
+
+  // ---------- helpers ----------
+  function fmtDate(s){return new Date(s).toLocaleDateString("es-CL",{day:"numeric",month:"short"});}
+  function fmtTime(s){return new Date(s).toLocaleTimeString("es-CL",{hour:"2-digit",minute:"2-digit"});}
+
   function matchCard(m){
-    const home = m.homeTeam?.shortName || m.homeTeam?.name || "?";
-    const away = m.awayTeam?.shortName || m.awayTeam?.name || "?";
-    const comp = m.competition?.name || m.group || "";
-    const isLive = m.status === "IN_PLAY" || m.status === "PAUSED";
-    let score = "vs";
-    if(m.status === "FINISHED" || isLive){
-      const hs = m.score?.fullTime?.home ?? "-";
-      const as = m.score?.fullTime?.away ?? "-";
-      score = hs + " - " + as;
-    } else {
-      score = fmtDate(m.utcDate) + " " + fmtTime(m.utcDate);
+    const home=m.homeTeam?.shortName||m.homeTeam?.name||"?";
+    const away=m.awayTeam?.shortName||m.awayTeam?.name||"?";
+    const comp=m.competition?.name||m.group||"";
+    const live=m.status==="IN_PLAY"||m.status==="PAUSED";
+    let score="vs";
+    if(m.status==="FINISHED"||live){
+      score=(m.score?.fullTime?.home??"-")+" - "+(m.score?.fullTime?.away??"-");
+    }else{
+      score=fmtDate(m.utcDate)+" "+fmtTime(m.utcDate);
     }
     return `<div class="match-ticket">
-      <div class="match-teams">${home} vs ${away}${isLive?' <span class="badge-live">EN VIVO</span>':''}</div>
+      <div class="match-teams">${home} vs ${away}${live?' <span class="badge-live">EN VIVO</span>':''}</div>
       <div class="match-score">${score}</div>
       <div class="match-meta">${comp}</div>
     </div>`;
   }
 
+  function ticketHTML(inner,tag){
+    return `<div class="ticket">${tag?`<span class="stub-tag">${tag}</span>`:""}${inner}</div>`;
+  }
+
+  // ---------- clubs ----------
   async function renderMatches(){
-    const listEl = document.getElementById("matchesList");
-    const clubs = await getData("clubs", defaultClubs);
-    let html = "";
+    const el=document.getElementById("matchesList");
+    const clubs=await getData("clubs",defaultClubs);
+    let html="";
     for(const club of clubs){
-      const teamId = FD_TEAM_IDS[club.name];
-      if(!teamId){
-        html += `<div class="match-ticket"><div class="match-teams">${club.name} — sin datos en vivo todavía</div><div class="match-score">--</div><div class="match-meta">Conecta este club para ver resultados reales</div></div>`;
+      const id=FD_TEAMS[club.name];
+      if(!id){
+        html+=`<div class="match-ticket"><div class="match-teams">${club.name}</div><div class="match-score">--</div><div class="match-meta">Sin datos en vivo todavía</div></div>`;
         continue;
       }
       try{
-        const [fin, sch] = await Promise.all([
-          fdFetch(`teams/${teamId}/matches?status=FINISHED&limit=2`),
-          fdFetch(`teams/${teamId}/matches?status=SCHEDULED&limit=1`)
-        ]);
-        (fin.matches||[]).forEach(m => html += matchCard(m));
-        (sch.matches||[]).forEach(m => html += matchCard(m));
-        if(!fin.matches?.length && !sch.matches?.length)
-          html += `<div class="match-ticket"><div class="match-teams">${club.name}</div><div class="match-meta">Sin partidos recientes</div></div>`;
+        const fin=await apiFetch(`teams/${id}/matches?status=FINISHED&limit=2`);
+        const sch=await apiFetch(`teams/${id}/matches?status=SCHEDULED&limit=1`);
+        (fin.matches||[]).forEach(m=>html+=matchCard(m));
+        (sch.matches||[]).forEach(m=>html+=matchCard(m));
+        if(!fin.matches?.length&&!sch.matches?.length)
+          html+=`<div class="match-ticket"><div class="match-teams">${club.name}</div><div class="match-meta">Sin partidos recientes</div></div>`;
       }catch(e){
-        html += `<div class="match-ticket"><div class="match-teams">${club.name}</div><div class="match-meta">No se pudo cargar (sin conexión o límite alcanzado)</div></div>`;
+        html+=`<div class="match-ticket"><div class="match-teams">${club.name}</div><div class="match-meta">Error cargando: ${e.message}</div></div>`;
       }
     }
-    listEl.innerHTML = html;
+    el.innerHTML=html;
   }
 
-  const WC_NAME_MAP = { Chile:"Chile", España:"Spain", Argentina:"Argentina", Brasil:"Brazil", Francia:"France" };
-
-  // Fetch WC matches once and share across all sections
-  let _wcMatchesPromise = null;
-  function getWCMatches(){
-    if(!_wcMatchesPromise){
-      _wcMatchesPromise = fdFetch("competitions/WC/matches")
-        .then(d => d.matches || [])
-        .catch(() => []);
-    }
-    return _wcMatchesPromise;
-  }
+  // ---------- selecciones ----------
+  const WC_MAP={Chile:"Chile",España:"Spain",Argentina:"Argentina",Brasil:"Brazil",Francia:"France"};
 
   async function renderWCMatches(){
-    const container = document.getElementById("wcMatchesList");
-    container.innerHTML = `<div class="note-box">Cargando partidos del Mundial…</div>`;
-    const all = await getWCMatches();
-    if(!all.length){ container.innerHTML = `<div class="note-box">No se pudieron cargar los partidos del Mundial.</div>`; return; }
-    let html = "";
+    const el=document.getElementById("wcMatchesList");
+    el.innerHTML=`<div class="note-box">Cargando partidos del Mundial…</div>`;
+    const all=await fetchWC();
+    if(!all.length){el.innerHTML=`<div class="note-box">No se pudieron cargar los partidos del Mundial.</div>`;return;}
+    let html="";
     for(const f of flags){
-      const eng = WC_NAME_MAP[f.name];
-      const tm = all.filter(m => m.homeTeam?.name===eng || m.awayTeam?.name===eng);
+      const eng=WC_MAP[f.name];
+      const tm=all.filter(m=>m.homeTeam?.name===eng||m.awayTeam?.name===eng);
       if(!tm.length){
-        html += `<div class="match-ticket"><div class="match-teams">${f.emoji} ${f.name}</div><div class="match-meta">No participa en el Mundial 2026</div></div>`;
+        html+=`<div class="match-ticket"><div class="match-teams">${f.emoji} ${f.name}</div><div class="match-meta">No participa en el Mundial 2026</div></div>`;
         continue;
       }
-      const fin = tm.filter(m => m.status==="FINISHED").slice(-2);
-      const live = tm.filter(m => m.status==="IN_PLAY"||m.status==="PAUSED").slice(0,1);
-      const nxt = tm.filter(m => m.status==="SCHEDULED"||m.status==="TIMED").slice(0,1);
-      [...fin,...live,...nxt].forEach(m => html += matchCard(m));
+      const fin=tm.filter(m=>m.status==="FINISHED").slice(-2);
+      const live=tm.filter(m=>m.status==="IN_PLAY"||m.status==="PAUSED").slice(0,1);
+      const nxt=tm.filter(m=>m.status==="SCHEDULED"||m.status==="TIMED").slice(0,1);
+      [...fin,...live,...nxt].forEach(m=>html+=matchCard(m));
     }
-    container.innerHTML = html;
+    el.innerHTML=html;
   }
 
-  // Derive group standings from match results (no extra API call needed)
+  // ---------- mundial groups ----------
   function buildStandings(matches){
-    const groups = {};
-    const teams = {};
-    matches.filter(m => m.stage==="GROUP_STAGE" && m.status==="FINISHED").forEach(m => {
-      const grp = m.group || "Grupo";
-      if(!groups[grp]) groups[grp] = new Set();
-      [m.homeTeam, m.awayTeam].forEach(t => {
+    const groups={},teams={};
+    matches.filter(m=>m.stage==="GROUP_STAGE"&&m.status==="FINISHED").forEach(m=>{
+      const grp=m.group||"Grupo";
+      if(!groups[grp]) groups[grp]=new Set();
+      [m.homeTeam,m.awayTeam].forEach(t=>{
         if(!t?.name) return;
         groups[grp].add(t.name);
-        if(!teams[t.name]) teams[t.name] = {name:t.shortName||t.name, pj:0, pts:0, gf:0, gc:0};
+        if(!teams[t.name]) teams[t.name]={name:t.shortName||t.name,pj:0,pts:0,gf:0,gc:0};
       });
-      const hs = m.score?.fullTime?.home ?? 0;
-      const as = m.score?.fullTime?.away ?? 0;
-      const ht = teams[m.homeTeam?.name];
-      const at = teams[m.awayTeam?.name];
-      if(ht){ ht.pj++; ht.gf+=hs; ht.gc+=as; ht.pts += hs>as?3:hs===as?1:0; }
-      if(at){ at.pj++; at.gf+=as; at.gc+=hs; at.pts += as>hs?3:as===hs?1:0; }
+      const hs=m.score?.fullTime?.home??0,as=m.score?.fullTime?.away??0;
+      const ht=teams[m.homeTeam?.name],at=teams[m.awayTeam?.name];
+      if(ht){ht.pj++;ht.gf+=hs;ht.gc+=as;ht.pts+=hs>as?3:hs===as?1:0;}
+      if(at){at.pj++;at.gf+=as;at.gc+=hs;at.pts+=as>hs?3:as===hs?1:0;}
     });
-    return Object.entries(groups).map(([grp, teamSet]) => ({
-      group: grp,
-      table: [...teamSet]
-        .map(n => teams[n])
-        .filter(Boolean)
-        .sort((a,b) => b.pts-a.pts || (b.gf-b.gc)-(a.gf-a.gc))
+    return Object.entries(groups).map(([grp,set])=>({
+      group:grp,
+      table:[...set].map(n=>teams[n]).filter(Boolean).sort((a,b)=>b.pts-a.pts||(b.gf-b.gc)-(a.gf-a.gc))
     }));
   }
 
   async function renderWCGroups(){
-    const el = document.getElementById("wcGroups");
-    const all = await getWCMatches();
-    if(!all.length){ el.innerHTML = `<div class="note-box">No se pudieron cargar los grupos.</div>`; return; }
-    const standings = buildStandings(all);
-    if(!standings.length){ el.innerHTML = `<div class="note-box">Grupos aún sin resultados — vuelve cuando empiecen los partidos.</div>`; return; }
-    el.innerHTML = standings.map(g => {
-      const rows = g.table.map((t,i) => {
-        const dif = (t.gf-t.gc);
-        return `<tr class="${i<2?'qualified':''}">
-          <td>${t.name}</td><td>${t.pj}</td><td>${t.pts}</td>
-          <td>${dif>=0?'+':''}${dif}</td>
-        </tr>`;
+    const el=document.getElementById("wcGroups");
+    const all=await fetchWC();
+    if(!all.length){el.innerHTML=`<div class="note-box">No se pudieron cargar los grupos.</div>`;return;}
+    const standings=buildStandings(all);
+    if(!standings.length){el.innerHTML=`<div class="note-box">Grupos sin resultados aún — vuelve cuando empiecen los partidos.</div>`;return;}
+    el.innerHTML=standings.map(g=>{
+      const rows=g.table.map((t,i)=>{
+        const dif=t.gf-t.gc;
+        return `<tr class="${i<2?'qualified':''}"><td>${t.name}</td><td>${t.pj}</td><td>${t.pts}</td><td>${dif>=0?'+':''}${dif}</td></tr>`;
       }).join("");
-      return `<div class="ticket">
-        <p class="player-name" style="font-size:18px;">${g.group}</p>
-        <table class="group-table">
-          <tr><th>Equipo</th><th>PJ</th><th>Pts</th><th>Dif</th></tr>
-          ${rows}
-        </table>
-      </div>`;
+      return `<div class="ticket"><p class="player-name" style="font-size:18px;">${g.group}</p>
+        <table class="group-table"><tr><th>Equipo</th><th>PJ</th><th>Pts</th><th>Dif</th></tr>${rows}</table></div>`;
     }).join("");
   }
 
   async function renderWCSchedule(){
-    const el = document.getElementById("wcSchedule");
-    const all = await getWCMatches();
-    if(!all.length){ el.innerHTML = `<div class="note-box">No se pudo cargar el calendario.</div>`; return; }
-    const upcoming = all.filter(m => m.status==="SCHEDULED"||m.status==="TIMED"||m.status==="IN_PLAY"||m.status==="PAUSED").slice(0,20);
-    if(!upcoming.length){ el.innerHTML = `<div class="note-box">No hay partidos próximos disponibles.</div>`; return; }
-    const byDay = {};
-    upcoming.forEach(m => {
-      const day = new Date(m.utcDate).toLocaleDateString("es-CL",{weekday:"long",day:"numeric",month:"long"});
+    const el=document.getElementById("wcSchedule");
+    const all=await fetchWC();
+    if(!all.length){el.innerHTML=`<div class="note-box">No se pudo cargar el calendario.</div>`;return;}
+    const upcoming=all.filter(m=>["SCHEDULED","TIMED","IN_PLAY","PAUSED"].includes(m.status)).slice(0,20);
+    if(!upcoming.length){el.innerHTML=`<div class="note-box">No hay partidos próximos disponibles.</div>`;return;}
+    const byDay={};
+    upcoming.forEach(m=>{
+      const day=new Date(m.utcDate).toLocaleDateString("es-CL",{weekday:"long",day:"numeric",month:"long"});
       if(!byDay[day]) byDay[day]=[];
       byDay[day].push(m);
     });
-    el.innerHTML = Object.entries(byDay).map(([day,ms]) =>
-      `<div class="sched-day">${day}</div>` + ms.map(m => matchCard(m)).join("")
-    ).join("");
+    el.innerHTML=Object.entries(byDay).map(([day,ms])=>`<div class="sched-day">${day}</div>`+ms.map(m=>matchCard(m)).join("")).join("");
   }
 
   async function renderWCBracket(){
-    const el = document.getElementById("wcBracket");
-    const all = await getWCMatches();
-    if(!all.length){ el.innerHTML = `<div class="note-box">No se pudo cargar la llave.</div>`; return; }
-    const r16 = all.filter(m => m.stage==="ROUND_OF_16"||m.stage==="LAST_16");
+    const el=document.getElementById("wcBracket");
+    const all=await fetchWC();
+    if(!all.length){el.innerHTML=`<div class="note-box">No se pudo cargar la llave.</div>`;return;}
+    const r16=all.filter(m=>["ROUND_OF_16","LAST_16"].includes(m.stage));
     if(!r16.length){
-      el.innerHTML = `<div class="note-box">Los cruces de Dieciseisavos se definirán al terminar la fase de grupos. Vuelve a revisar cuando estén listos.</div>`;
+      el.innerHTML=`<div class="note-box">Los cruces de Dieciseisavos se definirán al terminar la fase de grupos.</div>`;
       return;
     }
-    el.innerHTML = `<div class="bracket-scroll">` +
-      r16.map(m => {
-        const home = m.homeTeam?.shortName||m.homeTeam?.name||"Por definir";
-        const away = m.awayTeam?.shortName||m.awayTeam?.name||"Por definir";
-        const isTBD = !m.homeTeam?.name || !m.awayTeam?.name;
-        let score = fmtDate(m.utcDate);
-        if(m.status==="FINISHED"){ score = (m.score?.fullTime?.home??"-")+" - "+(m.score?.fullTime?.away??"-"); }
-        return `<div class="bracket-pair">
-          <div class="vs-row ${isTBD?'tbd':''}">${home}</div>
-          <div class="vs-row ${isTBD?'tbd':''}">vs ${away}</div>
-          <div class="bp-date">${score}</div>
-        </div>`;
-      }).join("") + `</div>`;
+    el.innerHTML=`<div class="bracket-scroll">`+r16.map(m=>{
+      const home=m.homeTeam?.shortName||m.homeTeam?.name||"Por definir";
+      const away=m.awayTeam?.shortName||m.awayTeam?.name||"Por definir";
+      const tbd=!m.homeTeam?.name||!m.awayTeam?.name;
+      let score=fmtDate(m.utcDate);
+      if(m.status==="FINISHED") score=(m.score?.fullTime?.home??"-")+" - "+(m.score?.fullTime?.away??"-");
+      return `<div class="bracket-pair"><div class="vs-row ${tbd?'tbd':''}">${home}</div><div class="vs-row ${tbd?'tbd':''}">vs ${away}</div><div class="bp-date">${score}</div></div>`;
+    }).join("")+`</div>`;
   }
 
-  function ticketHTML(inner, tag){
-    return `<div class="ticket">${tag?`<span class="stub-tag">${tag}</span>`:""}${inner}</div>`;
-  }
-
+  // ---------- players ----------
   async function renderPlayers(){
-    const players = await getData("players", defaultPlayers);
-    document.getElementById("countPlayers").textContent = players.length;
-    const grid = document.getElementById("playersGrid");
-    grid.innerHTML = players.map(p => ticketHTML(`
-      <p class="player-name">${p.name}</p>
-      <p class="player-club">${p.club}</p>
+    const players=await getData("players",defaultPlayers);
+    document.getElementById("countPlayers").textContent=players.length;
+    const grid=document.getElementById("playersGrid");
+    grid.innerHTML=players.map(p=>ticketHTML(`
+      <p class="player-name">${p.name}</p><p class="player-club">${p.club}</p>
       <div class="perf"></div>
       <div class="stat-row"><span>Posición</span><span class="v">${p.info}</span></div>
-    `, "Carnet")).join("") + `<div class="add-card" id="addPlayerBtn">+ Agregar jugador</div>`;
-    document.getElementById("addPlayerBtn").onclick = async () => {
-      const name = prompt("Nombre del jugador:");
-      if(!name) return;
-      const club = prompt("¿De qué club o selección es?") || "";
-      const info = prompt("Algo sobre él (posición, edad, etc.):") || "";
-      const current = await getData("players", defaultPlayers);
-      current.push({name, club, info});
-      await setData("players", current);
-      renderPlayers();
+    `,"Carnet")).join("")+`<div class="add-card" id="addPlayerBtn">+ Agregar jugador</div>`;
+    document.getElementById("addPlayerBtn").onclick=async()=>{
+      const name=prompt("Nombre del jugador:");if(!name) return;
+      const club=prompt("¿De qué club o selección?")||"";
+      const info=prompt("Posición, edad, etc.:")||"";
+      const cur=await getData("players",defaultPlayers);cur.push({name,club,info});
+      await setData("players",cur);renderPlayers();
     };
   }
 
+  // ---------- clubs ----------
   async function renderClubs(){
-    const clubs = await getData("clubs", defaultClubs);
-    const grid = document.getElementById("clubsGrid");
-    grid.innerHTML = clubs.map((c,i) => ticketHTML(`
+    const clubs=await getData("clubs",defaultClubs);
+    const grid=document.getElementById("clubsGrid");
+    grid.innerHTML=clubs.map((c,i)=>ticketHTML(`
       <div class="club-crest-row">
         <div class="crest" style="background:${c.color}">${c.initials}</div>
-        <div>
-          <p class="player-name" style="font-size:18px;">${c.name}</p>
-          <p class="player-club">${i===0 ? "Favorito ⭐" : "Lo sigo"}</p>
-        </div>
+        <div><p class="player-name" style="font-size:18px;">${c.name}</p><p class="player-club">${i===0?"Favorito ⭐":"Lo sigo"}</p></div>
       </div>
-    `)).join("") + `<div class="add-card" id="addClubBtn">+ Agregar club</div>`;
-    document.getElementById("addClubBtn").onclick = async () => {
-      const name = prompt("Nombre del club:");
-      if(!name) return;
-      const initials = (prompt("Sigla corta (ej: FCB):") || name.slice(0,3)).toUpperCase();
-      const current = await getData("clubs", defaultClubs);
-      current.push({name, initials, color:"#3F8F5F"});
-      await setData("clubs", current);
-      renderClubs();
-      renderMatches();
+    `)).join("")+`<div class="add-card" id="addClubBtn">+ Agregar club</div>`;
+    document.getElementById("addClubBtn").onclick=async()=>{
+      const name=prompt("Nombre del club:");if(!name) return;
+      const initials=(prompt("Sigla corta (ej: FCB):")||name.slice(0,3)).toUpperCase();
+      const cur=await getData("clubs",defaultClubs);cur.push({name,initials,color:"#3F8F5F"});
+      await setData("clubs",cur);renderClubs();renderMatches();
     };
   }
 
+  // ---------- flags ----------
   function renderFlags(){
-    document.getElementById("flagsGrid").innerHTML = flags.map(f => `
-      <div class="flag-card">
-        <span class="flag-emoji">${f.emoji}</span>
-        <span class="name">${f.name}</span>
-      </div>
+    document.getElementById("flagsGrid").innerHTML=flags.map(f=>`
+      <div class="flag-card"><span class="flag-emoji">${f.emoji}</span><span class="name">${f.name}</span></div>
     `).join("");
   }
 
+  // ---------- pitch ----------
   async function renderPitch(){
-    const lineup = await getData("lineup", {});
-    const pitch = document.getElementById("pitch");
-    const rows = [[0],[1,2,3,4],[5,6,7],[8,9,10]];
-    pitch.innerHTML = rows.map(rowIdx => `
-      <div class="pitch-row">
-        ${rowIdx.map(i => `
-          <div class="slot" data-i="${i}">
-            <span class="pos">${positions[i]}</span>
-            <span class="nm">${lineup[i] || "Elegir"}</span>
-          </div>
-        `).join("")}
-      </div>
-    `).join("");
-    pitch.querySelectorAll(".slot").forEach(slot => {
-      slot.onclick = async () => {
-        const i = slot.getAttribute("data-i");
-        const name = prompt("¿Qué jugador va en " + positions[i] + "?");
-        if(name === null) return;
-        const current = await getData("lineup", {});
-        current[i] = name || undefined;
-        await setData("lineup", current);
-        renderPitch();
+    const lineup=await getData("lineup",{});
+    const pitch=document.getElementById("pitch");
+    const rows=[[0],[1,2,3,4],[5,6,7],[8,9,10]];
+    pitch.innerHTML=rows.map(rowIdx=>`<div class="pitch-row">${rowIdx.map(i=>`
+      <div class="slot" data-i="${i}"><span class="pos">${positions[i]}</span><span class="nm">${lineup[i]||"Elegir"}</span></div>
+    `).join("")}</div>`).join("");
+    pitch.querySelectorAll(".slot").forEach(slot=>{
+      slot.onclick=async()=>{
+        const i=slot.getAttribute("data-i");
+        const name=prompt("¿Qué jugador va en "+positions[i]+"?");
+        if(name===null) return;
+        const cur=await getData("lineup",{});cur[i]=name||undefined;
+        await setData("lineup",cur);renderPitch();
       };
     });
   }
 
-  document.getElementById("resetPitch").onclick = async () => {
-    if(confirm("¿Borrar todo tu 11 ideal?")){
-      await setData("lineup", {});
-      renderPitch();
-    }
+  document.getElementById("resetPitch").onclick=async()=>{
+    if(confirm("¿Borrar todo tu 11 ideal?")){await setData("lineup",{});renderPitch();}
   };
 
-  renderPlayers();
-  renderClubs();
-  renderFlags();
-  renderMatches();
-  renderWCMatches();
-  renderWCGroups();
-  renderWCSchedule();
-  renderWCBracket();
-  renderPitch();
+  // ---------- init — cargar en orden para no exceder límite de API ----------
+  async function init(){
+    renderPlayers();
+    renderClubs();
+    renderFlags();
+    renderPitch();
+    // Clubes primero (6 llamadas), luego Mundial (1 llamada compartida)
+    await renderMatches();
+    renderWCMatches();
+    renderWCGroups();
+    renderWCSchedule();
+    renderWCBracket();
+  }
+  init();
 })();
 </script>
-
 </body>
 </html>
