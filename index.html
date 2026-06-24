@@ -228,6 +228,7 @@
   const TSDB="https://www.thesportsdb.com/api/v1/json/3";
   const CACHE_MS=15*60*1000;
   const _teamIdCache={};
+  const TOP_LEAGUES=["Spanish La Liga","English Premier League","German Bundesliga","French Ligue 1","Italian Serie A","UEFA Champions League"];
 
   async function tsdbFetch(path){
     const ck="ts_"+path.replace(/\W/g,"_");
@@ -243,7 +244,9 @@
   async function getTeamId(name){
     if(_teamIdCache[name]) return _teamIdCache[name];
     const d=await tsdbFetch("/searchteams.php?t="+encodeURIComponent(name));
-    const id=d.teams?.[0]?.idTeam||null;
+    const teams=d.teams||[];
+    const best=teams.find(t=>TOP_LEAGUES.includes(t.strLeague))||teams[0]||null;
+    const id=best?.idTeam||null;
     if(id) _teamIdCache[name]=id;
     return id;
   }
@@ -257,6 +260,14 @@
           if(d.events?.length) return d.events;
         }catch(e){}
       }
+      try{
+        const [nxt,pst]=await Promise.all([
+          tsdbFetch("/eventsnextleague.php?id=4429"),
+          tsdbFetch("/eventspastleague.php?id=4429")
+        ]);
+        const combined=[...(pst.events||[]),...(nxt.events||[])];
+        if(combined.length) return combined;
+      }catch(e){}
       return [];
     })();
     return _wc;
@@ -315,7 +326,7 @@
           html+=`<div class="match-meta" style="margin:10px 0 4px;opacity:.6;font-size:12px;text-transform:uppercase;letter-spacing:1px;">${club.name}</div>`;
           fin.forEach(e=>html+=tsMatchCard(e));
           sch.forEach(e=>html+=tsMatchCard(e));
-        } else {
+        }else{
           html+=`<div class="match-ticket"><div class="match-teams">${club.name}</div><div class="match-meta">Sin partidos recientes</div></div>`;
         }
       }catch(e){
